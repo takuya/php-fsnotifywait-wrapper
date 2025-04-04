@@ -1,0 +1,37 @@
+{
+  "name": "takuya/php-fsnotifywait-wrapper",
+  "description": "plocate search wrapper",
+  "type": "library",
+  "license": "GPL-3.0-or-later",
+  "version": "0.1",
+  "autoload": {
+    "psr-4": {
+      "Takuya\\FsNotifyWrapper\\": "src/FsNotifyWrapper/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\PhpPlocateWrapper\\": "tests/"
+    },
+    "files": [
+      "tests/helpers/str_rand.php",
+      "tests/helpers/temp_dir.php",
+      "tests/helpers/proc_fork.php"
+    ]
+  },
+  "authors": [
+    {
+      "name": "takuya",
+      "email": "55338+takuya@users.noreply.github.com"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^9.6",
+    "takuya/php-sysv-ipc-message-queue": "^0.1.2",
+    "ext-posix": "*",
+    "takuya/php-sysv-ipc-info": "^0.1.0"
+  },
+  "require": {
+    "takuya/php-process-exec": "^0.1.1"
+  }
+}
