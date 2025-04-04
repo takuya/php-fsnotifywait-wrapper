@@ -1,6 +1,6 @@
 {
   "name": "takuya/php-fsnotifywait-wrapper",
-  "description": "plocate search wrapper",
+  "description": "fsnotifywait of fanotify command wrapper",
   "type": "library",
   "license": "GPL-3.0-or-later",
   "version": "0.1",
