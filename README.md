@@ -31,6 +31,11 @@ EventSource is a simple object like This.
 }
 ```
 
+## installation 
+```shell
+composer require takuya/php-fsnotifywait-wrapper
+```
+
 
 ## about fsnotifywait
 
