@@ -39,9 +39,9 @@ composer require takuya/php-fsnotifywait-wrapper
 
 ## about fsnotifywait
 
-`fsnotifywait` is added Linux Command. That can watch file changed by `fanotify` API
+`fsnotifywait` can be added as Linux Command. run `apt install inotofy-tools`. 
 
-`fanotify` is added Linux Kernel 5.10.
+This command can watch file changed by `fanotify` API. `fanotify` is added Linux Kernel 5.10.
 
 Compare `inotifywatch`, `fsnotifywait` uses FAN( fanotify API not inotify).
 
