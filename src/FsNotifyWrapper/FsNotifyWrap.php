@@ -39,6 +39,9 @@ class FsNotifyWrap {
   public function setOnChange ( $fn ) {
     $this->on_change = $fn;
   }
+  public function addOpts($opt){
+    $this->opts[] = $opt;
+  }
   
   protected function parse ( $line ) {
     preg_match( '/^(?<json>\{.+?}):(?<file>.+)$/', $line, $m );
@@ -46,9 +49,10 @@ class FsNotifyWrap {
     $ev = json_decode( $json );
     $file = preg_replace('|\(deleted\)$|','',$file);
     $file = preg_replace('|\(deleted\)/|','',$file);
+    $ev->type = preg_replace('|,ISDIR|','',$ev->type);
     return [
-      'time' => $ev?->time ?? null,
-      'type' => $ev?->type ?? null,
+      'time' => $ev->time,
+      'type' => $ev->type,
       'file' => $file,
     ];
   }
@@ -94,5 +98,7 @@ class FsNotifyWrap {
     $this->timeout_sec && $proc->addObserver( $this->addTimeOut() );
     $proc->onStdout( fn( $line ) => $this->changed( $line ) );
     $proc->start();
+    //
+    fwrite(STDERR,$proc->getErrout());
   }
 }

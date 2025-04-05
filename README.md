@@ -36,6 +36,12 @@ EventSource is a simple object like This.
 composer require takuya/php-fsnotifywait-wrapper
 ```
 
+## command 
+Watch command included.
+```php
+sudo vendor/bin/fswatch -S --dir /home --file /path/calll/echo.sh
+```
+If something changed, exec echo.sh
 
 ## about fsnotifywait
 

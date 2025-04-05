@@ -1,0 +1,69 @@
+#!/usr/bin/env php8.3
+<?php
+if (file_exists(__DIR__.'/../../vendor/autoload.php')){
+  require_once __DIR__.'/../../vendor/autoload.php';
+}
+
+use Takuya\FsNotifyWrapper\FsNotifyWrap;
+use Takuya\FsNotifyWrapper\FsEventObserver;
+use Takuya\FsNotifyWrapper\Events\FanEvent;
+use Takuya\ProcOpen\ProcOpen;
+
+
+function main ( $options ) {
+  $dir  =   $options['d']??$options['dir'];
+  $file =   $options['f']??$options['file'];
+  $useFs =  array_key_exists('S',$options);
+  if (!file_exists($dir)){
+    fwrite(STDERR,"{$dir} is not exists.");
+    exit(1);
+  }
+  if (!file_exists($file)){
+    fwrite(STDERR,"{$file} is not exists.");
+    exit(1);
+  }
+  
+  $fsnotify = new FsNotifyWrap($dir);
+  $fsnotify->timeout_sec = false;
+  $fsnotify->interval=10;
+  $useFs && $fsnotify->addOpts('-S');
+  $observer = new FsEventObserver();
+  $observer->watch(function(FanEvent $ev )use($file){
+      $mesg = $ev->getEventSource();
+      $proc = new ProcOpen(['/usr/bin/sh',$file,$mesg->type,$mesg->file]);
+      $proc->run();
+      echo $proc->getOutput();
+      fflush(STDOUT);
+  });
+  $fsnotify->addObserver($observer);
+  $fsnotify->listen();
+  exit(0);
+}
+
+
+
+
+$options = getopt("hSd:f:", ["help", "dir:", "file:"]);
+
+function help() {
+  echo "Usage: php ".__FILE__." [options]\n";
+  echo "  -h, --help                Show this help message\n";
+  echo "  -d {dir}  , --dir  {dir}  Directory to watch \n";
+  echo "  -f {file} , --file {file} File to run when Changed \n";
+  echo "                                                     \n";
+  echo "  -S  Watch FileSystem(sudo required) \n";
+  exit(0);
+}
+
+
+if( isset($options['h']) || isset($options['help']) ) {
+  help();
+}
+$dir_opts_exists = isset($options['d']) || isset($options['dir']);
+$file_opts_exists = isset($options['f']) || isset($options['file']);
+if( $dir_opts_exists && $file_opts_exists ) {
+  main($options);
+}
+
+echo "Invalid option. Use -h or --help for usage information.\n";
+exit(1);

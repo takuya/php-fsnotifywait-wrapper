@@ -25,6 +25,9 @@
       "email": "55338+takuya@users.noreply.github.com"
     }
   ],
+  "bin": [
+    "src/bin/fswatch"
+  ],
   "require-dev": {
     "phpunit/phpunit": "^9.6",
     "takuya/php-sysv-ipc-message-queue": "^0.1.2",
