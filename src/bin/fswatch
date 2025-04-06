@@ -32,12 +32,12 @@ function main ( $options ) {
   $fsnotify->interval=10;
   $useFs && $fsnotify->addOpts('-S');
   $observer = new FsEventObserver();
-  $observer->watch(function(FanEvent $ev )use($file){
-      $mesg = $ev->getEventSource();
-      $proc = new ProcOpen(['/usr/bin/sh',$file,$mesg->type,$mesg->file]);
-      $proc->run();
-      echo $proc->getOutput();
-      fflush(STDOUT);
+  $observer->watch(function(FanEvent $ev )use($exec){
+    $mesg = $ev->getEventSource();
+    $proc = new ProcOpen([$exec,$mesg->type,$mesg->file]);
+    $proc->setStdout(STDOUT);
+    $proc->setStderr(STDERR);
+    $proc->run();
   });
   $fsnotify->addObserver($observer);
   $fsnotify->listen();
