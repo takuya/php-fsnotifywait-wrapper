@@ -50,16 +50,22 @@ class FsNotifyWrap {
     $file = preg_replace('|\(deleted\)$|','',$file);
     $file = preg_replace('|\(deleted\)/|','',$file);
     $ev->type = preg_replace('|,ISDIR|','',$ev->type);
-    return [
-      'time' => $ev->time,
-      'type' => $ev->type,
-      'file' => $file,
-    ];
+    $events = [];
+    foreach (explode(',',$ev->type) as $type){
+      $events[]=[
+        'time' => $ev->time,
+        'type' => $type,
+        'file' => $file,
+      ];
+    }
+      return $events;
   }
   
   protected function changed ( string $line ): void {
     $ret = $this->parse( $line );
-    call_user_func( $this->on_change, $ret );
+    foreach ( $ret as $ev ) {
+      call_user_func( $this->on_change, $ev );
+    }
   }
   
   protected function addTimeOut () {
