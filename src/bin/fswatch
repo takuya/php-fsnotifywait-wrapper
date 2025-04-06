@@ -29,7 +29,7 @@ function main ( $options ) {
   
   $fsnotify = new FsNotifyWrap($dir);
   $fsnotify->timeout_sec = false;
-  $fsnotify->interval=10;
+  $fsnotify->interval=30;
   $useFs && $fsnotify->addOpts('-S');
   $observer = new FsEventObserver();
   $observer->watch(function(FanEvent $ev )use($exec){
