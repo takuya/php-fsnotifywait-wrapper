@@ -3,7 +3,7 @@
   "description": "fsnotifywait of fanotify command wrapper",
   "type": "library",
   "license": "GPL-3.0-or-later",
-  "version": "0.1",
+  "version": "0.2",
   "autoload": {
     "psr-4": {
       "Takuya\\FsNotifyWrapper\\": "src/FsNotifyWrapper/"
