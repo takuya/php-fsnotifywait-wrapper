@@ -39,7 +39,7 @@ composer require takuya/php-fsnotifywait-wrapper
 ## command 
 Watch command included.
 ```php
-sudo vendor/bin/fswatch -S --dir /home --file /path/calll/echo.sh
+sudo vendor/bin/fswatch -S --dir /home --exec /usr/bin/echo 
 ```
 If something changed, exec echo.sh
 

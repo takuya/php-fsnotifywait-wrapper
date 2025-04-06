@@ -12,14 +12,18 @@ use Takuya\ProcOpen\ProcOpen;
 
 function main ( $options ) {
   $dir  =   $options['d']??$options['dir'];
-  $file =   $options['f']??$options['file'];
+  $exec =   $options['e']??$options['exec'];
   $useFs =  array_key_exists('S',$options);
   if (!file_exists($dir)){
     fwrite(STDERR,"{$dir} is not exists.");
     exit(1);
   }
-  if (!file_exists($file)){
-    fwrite(STDERR,"{$file} is not exists.");
+  if (!file_exists($exec)){
+    fwrite(STDERR,"{$exec} is not exists.");
+    exit(1);
+  }
+  if(!is_executable($exec)){
+    fwrite(STDERR,"{$exec} no executable.");
     exit(1);
   }
   
@@ -43,13 +47,13 @@ function main ( $options ) {
 
 
 
-$options = getopt("hSd:f:", ["help", "dir:", "file:"]);
+$options = getopt("hSd:e:", ["help", "dir:", "exec:"]);
 
 function help() {
   echo "Usage: php ".__FILE__." [options]\n";
   echo "  -h, --help                Show this help message\n";
   echo "  -d {dir}  , --dir  {dir}  Directory to watch \n";
-  echo "  -f {file} , --file {file} File to run when Changed \n";
+  echo "  -e {file} , --exec {file} File to run when Changed \n";
   echo "                                                     \n";
   echo "  -S  Watch FileSystem(sudo required) \n";
   exit(0);
@@ -60,7 +64,7 @@ if( isset($options['h']) || isset($options['help']) ) {
   help();
 }
 $dir_opts_exists = isset($options['d']) || isset($options['dir']);
-$file_opts_exists = isset($options['f']) || isset($options['file']);
+$file_opts_exists = isset($options['e']) || isset($options['exec']);
 if( $dir_opts_exists && $file_opts_exists ) {
   main($options);
 }
