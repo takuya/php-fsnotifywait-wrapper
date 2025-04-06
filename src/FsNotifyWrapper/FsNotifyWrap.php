@@ -45,8 +45,8 @@ class FsNotifyWrap {
   
   protected function parse ( $line ) {
     preg_match( '/^(?<json>\{.+?}):(?<file>.+)$/', $line, $m );
-    [$json, $file] = [$m['json'] ?? '{}', $m['file'] ?? ''];
-    $ev = json_decode( $json );
+    [$json_str, $file] = [$m['json'] ?? '{}', $m['file'] ?? ''];
+    $ev = json_decode( $json_str );
     $file = preg_replace('|\(deleted\)$|','',$file);
     $file = preg_replace('|\(deleted\)/|','',$file);
     $ev->type = preg_replace('|,ISDIR|','',$ev->type);
