@@ -13,8 +13,11 @@
     stopOnError="true"
     failOnRisky="true"
     failOnWarning="true"
-    processIsolation="false"
-    verbose="true">
+    failOnSkipped="true"
+    failOnEmptyTestSuite="true"
+    processIsolation="true"
+    stopOnFailure="true"
+    verbose="false">
   <testsuites>
     <testsuite name="Units">
       <directory suffix="Test.php">tests/Units</directory>

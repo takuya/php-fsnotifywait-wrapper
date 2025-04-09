@@ -23,9 +23,9 @@ class FsNotifyWrap {
   
   public function __construct (
     public string $target,
-    public string $events = 'create,delete,move,modify',
+    public string $events = 'create,delete,move',
     public float  $interval = 1,
-    public int    $timeout_sec = 10
+    public float  $timeout_sec = 10
   ) {
     $this->emitter = new FsEventEmitter();
     $this->on_change = function( $data ) {
@@ -47,7 +47,8 @@ class FsNotifyWrap {
     preg_match( '/^(?<json>\{.+?}):(?<file>.+)$/', $line, $m );
     [$json_str, $file] = [$m['json'] ?? '{}', $m['file'] ?? ''];
     $ev = json_decode( $json_str );
-    $file = preg_replace('|\(deleted\)$|','',$file);
+    if(empty($file)){return[];}
+    $file = preg_replace('|\s*\(deleted\)$|','',$file);
     $file = preg_replace('|\(deleted\)/|','',$file);
     $ev->type = preg_replace('|,ISDIR|','',$ev->type);
     $events = [];
@@ -58,22 +59,21 @@ class FsNotifyWrap {
         'file' => $file,
       ];
     }
-      return $events;
+    return $events;
   }
   
   protected function changed ( string $line ): void {
-    $ret = $this->parse( $line );
-    foreach ( $ret as $ev ) {
+    foreach ( $this->parse( $line ) as $ev ) {
       call_user_func( $this->on_change, $ev );
     }
   }
   
   protected function addTimeOut () {
     $observer = new ProcessObserver();
-    $start_at = time();
-    $observer->addEventListener( ProcessStarted::class, function() use ( &$start_at ) { $start_at = time(); } );
+    $start_at = microtime(true);
+    $observer->addEventListener( ProcessStarted::class, function() use ( &$start_at ) { $start_at = microtime(true); } );
     $observer->addEventListener( ProcessRunning::class, function( ProcessEvent $ev ) use ( $start_at ) {
-      if ( time() > $start_at + $this->timeout_sec ) {
+      if ( microtime(true) > $start_at + $this->timeout_sec ) {
         $ev->getExecutor()->signal( 2 );
       }
     } );

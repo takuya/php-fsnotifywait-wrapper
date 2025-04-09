@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\PhpPlocateWrapper\Units;
+namespace Tests\FsNotifyWrapperTest\Units;
 
-use Tests\PhpPlocateWrapper\TestCase;
+use Tests\FsNotifyWrapperTest\TestCase;
 use Takuya\FsNotifyWrapper\LocateWrap;
 use Takuya\FsNotifyWrapper\LocateDbBuilder;
 use function Takuya\Helpers\str_rand;
