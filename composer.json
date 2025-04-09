@@ -11,12 +11,13 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\PhpPlocateWrapper\\": "tests/"
+      "Tests\\FsNotifyWrapperTest\\": "tests/"
     },
     "files": [
       "tests/helpers/str_rand.php",
       "tests/helpers/temp_dir.php",
-      "tests/helpers/proc_fork.php"
+      "tests/helpers/proc_fork.php",
+      "tests/helpers/process_exists.php"
     ]
   },
   "authors": [
